@@ -1,5 +1,6 @@
 import pygame
 
+
 class Player:
     length = 0
     head_position_x = 0
