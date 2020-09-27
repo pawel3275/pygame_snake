@@ -1,71 +1,52 @@
 import pygame
-
+from player import Player
 
 width, height = 500, 500
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Snake")
 clock = pygame.time.Clock()
 
-global circle_position
-circle_position = (int(width/2), int(height/2))
-global velocity
-velocity = 5
-global direction
-direction = "UP"
+
+class Game:
+    def __init__(self):
+        self.head_direction = "UP"
+
+    def process_event(self, passed_event):
+        if passed_event.type is pygame.QUIT:
+            pygame.quit()
+
+        key = pygame.key.get_pressed()
+
+        if key[pygame.K_w]:
+            print("Direction UP")
+            self.head_direction = "UP"
+            return
+
+        if key[pygame.K_s]:
+            print("Direction DOWN")
+            self.head_direction = "DOWN"
+            return
+
+        if key[pygame.K_a]:
+            print("Direction LEFT")
+            self.head_direction = "LEFT"
+            return
+
+        if key[pygame.K_d]:
+            print("Direction RIGHT")
+            self.head_direction = "RIGHT"
+            return
 
 
-def process_event(event):
-    if event.type is pygame.QUIT:
-        pygame.quit()
-
-    key = pygame.key.get_pressed()
-
-    global direction
-    if key[pygame.K_w]:
-        print("Direction UP")
-        direction = "UP"
-        return
-
-    if key[pygame.K_s]:
-        print("Direction DOWN")
-        direction = "DOWN"
-        return
-
-    if key[pygame.K_a]:
-        print("Direction LEFT")
-        direction = "LEFT"
-        return
-
-    if key[pygame.K_d]:
-        print("Direction RIGHT")
-        direction = "RIGHT"
-        return
-
-
-def handle_direction():
-    global direction
-    global circle_position
-    circle_position_x, circle_position_y = circle_position
-    if direction is "UP":
-        circle_position = circle_position_x, circle_position_y - velocity
-
-    if direction is "DOWN":
-        circle_position = circle_position_x, circle_position_y + velocity
-
-    if direction is "LEFT":
-        circle_position = circle_position_x - velocity, circle_position_y
-
-    if direction is "RIGHT":
-        circle_position = circle_position_x + velocity, circle_position_y
-
-
+p1 = Player(int(width/2), int(height/2))
+main_game = Game()
 while True:
     for event in pygame.event.get():
-        process_event(event)
+        main_game.process_event(event)
 
     screen.fill((0, 0, 0))
-    handle_direction()
-    pygame.draw.circle(screen, (255, 0, 0), circle_position, 3, 2)
+    p1.move_head_to_position(main_game.head_direction)
+    p1.draw_head(screen)
     pygame.display.update()
 
     clock.tick(40)
