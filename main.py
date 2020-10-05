@@ -7,10 +7,15 @@ screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Snake")
 clock = pygame.time.Clock()
 
+movement_coords_history = []
+
 
 class Game:
+    snake_nodes = []
+
     def __init__(self):
         self.head_direction = "UP"
+        self.score = 0
 
     def process_event(self, passed_event):
         if passed_event.type is pygame.QUIT:
@@ -34,17 +39,18 @@ class Game:
             self.head_direction = "RIGHT"
             return
 
-    @staticmethod
-    def check_for_point_consumption(player_position_x, player_position_y, point_position_x, point_position_y):
+    def check_for_point_consumption(self, player, point_position_x, point_position_y):
         scale_factor = 8
-        player_position_x_upper = player_position_x + scale_factor
-        player_position_x_lower = player_position_x - scale_factor
+        player_position_x_upper = player.head_position_x + scale_factor
+        player_position_x_lower = player.head_position_x - scale_factor
 
-        player_position_y_upper = player_position_y + scale_factor
-        player_position_y_lower = player_position_y - scale_factor
+        player_position_y_upper = player.head_position_y + scale_factor
+        player_position_y_lower = player.head_position_y - scale_factor
 
-        if point_position_x < player_position_x_upper and point_position_x > player_position_x_lower and point_position_y < player_position_y_upper and point_position_y > player_position_y_lower:
+        if player_position_x_lower < point_position_x < player_position_x_upper and \
+                player_position_y_lower < point_position_y < player_position_y_upper:
             print("Point has been consumed")
+            self.score += 1
             return True
         else:
             return False
@@ -58,14 +64,14 @@ while True:
         main_game.process_event(event)
 
     screen.fill((0, 0, 0))
-    p1.move_head_to_position(main_game.head_direction)
-    p1.draw_head(screen)
+
+    p1.move_head_to_position(main_game.head_direction, main_game.score)
+    p1.draw_nodes(screen)
 
     scoreboard.spawn_point(screen)
-    scoreboard.point_is_visible = Game.check_for_point_consumption(p1.head_position_x, p1.head_position_y, scoreboard.point_position_x, scoreboard.point_position_y)
+    scoreboard.point_is_visible = main_game.check_for_point_consumption(p1,
+                                                                        scoreboard.point_position_x,
+                                                                        scoreboard.point_position_y)
     pygame.display.update()
 
-    clock.tick(40)
-
-
-
+    clock.tick(15)

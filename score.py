@@ -4,8 +4,8 @@ import random
 
 class Score:
     point_is_visible = False
-    point_position_x = 100
-    point_position_y = 100
+    point_position_x = 250
+    point_position_y = 200
 
     def spawn_point(self, screen):
         if not self.point_is_visible:
