@@ -11,8 +11,6 @@ movement_coords_history = []
 
 
 class Game:
-    snake_nodes = []
-
     def __init__(self):
         self.head_direction = "UP"
         self.score = 0
@@ -55,6 +53,28 @@ class Game:
         else:
             return False
 
+    def check_for_wall_collision(self, player):
+        if player.head_position_x <= 0 or player.head_position_x >= 500:
+            print("GAME ENDED")
+            print("Score:", self.score)
+
+        if player.head_position_y <= 0 or player.head_position_y >= 500:
+            print("GAME ENDED")
+            print("Score:", self.score)
+
+        pass
+
+    def check_for_body_collision(self, player):
+        for iterator in range(1, len(player.nodes)):
+            node_position_x, node_position_y = player.nodes[iterator]
+
+            if player.head_position_x == node_position_x and player.head_position_y == node_position_y:
+                print("Head Collided with: ", iterator, node_position_x, node_position_y)
+                print("GAME ENDED YOU ATE YOURSELF")
+                print("Score:", self.score)
+
+        pass
+
 
 p1 = Player(int(width / 2), int(height / 2))
 main_game = Game()
@@ -72,6 +92,8 @@ while True:
     scoreboard.point_is_visible = main_game.check_for_point_consumption(p1,
                                                                         scoreboard.point_position_x,
                                                                         scoreboard.point_position_y)
+    main_game.check_for_wall_collision(p1)
+    main_game.check_for_body_collision(p1)
     pygame.display.update()
 
     clock.tick(15)

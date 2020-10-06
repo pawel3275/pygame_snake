@@ -11,7 +11,7 @@ class Player:
     def __init__(self, head_start_position_x, head_start_position_y):
         self.head_position_x = head_start_position_x
         self.head_position_y = head_start_position_y
-        self.nodes.append((self.head_position_x, self.head_position_y))
+        self.nodes.append((head_start_position_x, head_start_position_y))
 
     def move_head_to_position(self, direction, score):
         if len(self.nodes) <= score:
@@ -29,11 +29,11 @@ class Player:
         if direction is "RIGHT":
             self.head_position_x = self.head_position_x + self.velocity
 
-        self.nodes[0] = (self.head_position_x, self.head_position_y)
-
         for iterator in reversed(range(0, len(self.nodes))):
             pos_before_movement_x, pos_before_movement_y = self.nodes[iterator - 1]
             self.nodes[iterator] = pos_before_movement_x, pos_before_movement_y
+
+        self.nodes[0] = (self.head_position_x, self.head_position_y)
 
     def draw_nodes(self, screen):
         for node in self.nodes:
