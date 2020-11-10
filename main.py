@@ -81,14 +81,14 @@ class Game:
         pass
 
     def obtain_distances_from_head(self, player, point_position_x, point_position_y):
-        node_to_fill = DataCollector.training_data_note
+        node_to_fill = {}
         current_direction = self.head_direction
 
         # Calculate distance from wall. Should sum to height and width
-        node_to_fill["distance_from_wall_top"] = abs(player.head_position_x - height)
-        node_to_fill["distance_from_body_bottom"] = player.head_position_x
-        node_to_fill["distance_from_wall_right"] = abs(player.head_position_y - width)
-        node_to_fill["distance_from_wall_left"] = player.head_position_y
+        node_to_fill["distance_from_wall_right"] = abs(player.head_position_x - height)
+        node_to_fill["distance_from_wall_left"] = player.head_position_x
+        node_to_fill["distance_from_wall_bottom"] = abs(player.head_position_y - width)
+        node_to_fill["distance_from_wall_top"] = player.head_position_y
 
         # Calculate distance from body part
         # Fill initial zero values. Zero means there is no body part in that direction.
@@ -159,6 +159,7 @@ class Game:
 
 p1 = Player(int(width / 2), int(height / 2))
 main_game = Game()
+collector = DataCollector()
 scoreboard = Score()
 while True:
     for event in pygame.event.get():
@@ -173,7 +174,7 @@ while True:
     data_node = main_game.obtain_distances_from_head(p1,
                                                      scoreboard.point_position_x,
                                                      scoreboard.point_position_y)
-
+    collector.append_data_node(data_node)
     scoreboard.point_is_visible = main_game.check_for_point_consumption(p1,
                                                                         scoreboard.point_position_x,
                                                                         scoreboard.point_position_y)
@@ -181,6 +182,9 @@ while True:
     main_game.check_for_body_collision(p1)
     pygame.display.update()
 
+    if main_game.game_ended:
+        collector.save_data_as_csv()
+        pygame.quit()
+
     clock.tick(15)
 
-    data
