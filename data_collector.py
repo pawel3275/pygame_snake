@@ -1,6 +1,6 @@
 import csv
 import pathlib
-
+import numpy as np
 
 class DataCollector:
     training_data_movement = []
@@ -53,13 +53,13 @@ class DataCollector:
         pass
 
     def save_data_as_csv(self, filename="gameDataset.csv"):
-        current_path = pathlib.Path(__file__).parent.absolute()
-
         with open(filename, "w") as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=self.csv_columns)
             writer.writeheader()
             for data in self.training_data_movement:
                 writer.writerow(data)
 
-    def load_data_from_csv(self, file_path):
-        pass
+    @staticmethod
+    def load_data_from_csv(file_path, delimiter=",", keep_header=True):
+        data = np.genfromtxt(file_path, dtype=float, delimiter=delimiter, names=keep_header)
+        return data
