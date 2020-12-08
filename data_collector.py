@@ -2,7 +2,7 @@ import csv
 import pandas as pd
 import numpy as np
 from sklearn.utils import shuffle
-
+from sklearn import preprocessing
 
 class DataCollector:
     training_data_movement = []
@@ -106,3 +106,9 @@ class DataCollector:
         label_data_frame = label_data_frame.replace("LEFT", 2)
         label_data_frame = label_data_frame.replace("RIGHT", 3)
         return label_data_frame
+
+    @staticmethod
+    def normalize_data_frame_data(data_frame):
+        min_max_scaler = preprocessing.MinMaxScaler()
+        data_frame_scaled = min_max_scaler.fit_transform(data_frame)
+        return pd.DataFrame(data_frame_scaled)

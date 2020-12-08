@@ -24,9 +24,8 @@ if __name__ == '__main__':
     df_test_data, df_test_labels = DataCollector.extract_labels_from_data_frame(df_test, column_name="action")
 
     df_train_labels = DataCollector.update_labels_to_int_values(df_train_labels)
-
-    print(df_train_data.dtypes)
+    df_train_data = DataCollector.normalize_data_frame_data(df_train_data)
+    # df_train_labels = DataCollector.normalize_data_frame_data(df_train_labels.reshape(1, -1))
 
     am = ArtificialModel()
-
     am.train_model(df_train_data, df_train_labels, df_test_data, df_test_labels)
