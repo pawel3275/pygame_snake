@@ -3,6 +3,7 @@ from player import Player
 import pygame
 from score import Score
 from data_collector import DataCollector
+import numpy as np
 
 
 class Game:
@@ -19,10 +20,7 @@ class Game:
         self.collector = DataCollector()
         self.scoreboard = Score()
 
-    def process_event(self, passed_event):
-        if passed_event.type is pygame.QUIT:
-            pygame.quit()
-
+    def process_event(self):
         key = pygame.key.get_pressed()
 
         if key[pygame.K_w]:
@@ -166,17 +164,27 @@ class Game:
     def get_player(self):
         return self.player
 
-    def play(self):
+    def play(self, model):
+        prediction = 0
         while True and not self.game_ended:
             screen = self.get_screen()
             player = self.get_player()
 
-            for event in pygame.event.get():
-                self.process_event(event)
-
             screen.fill((0, 0, 0))
 
-            player.move_head_to_position(self.head_direction, self.score)
+            for event in pygame.event.get():
+                if event.type is pygame.QUIT:
+                    pygame.quit()
+
+                if not model:
+                    self.process_event(event)
+
+            if not model:
+                player.move_head_to_position(self.head_direction, self.score)
+            else:
+                direction = DataCollector.parse_num_into_action(prediction)
+                player.move_head_to_position(direction, self.score)
+
             player.draw_nodes(screen)
 
             self.scoreboard.spawn_point(screen)
@@ -190,6 +198,13 @@ class Game:
             self.check_for_wall_collision(player)
             self.check_for_body_collision(player)
             pygame.display.update()
+
+            if model:
+                values = list(data_node.values())
+                values = values[:-1]
+                values = np.array(values)
+                values = values[np.newaxis, ...]
+                prediction = np.argmax(model.predict(values), axis=1)
 
             if self.game_ended:
                 self.collector.save_data_as_csv()

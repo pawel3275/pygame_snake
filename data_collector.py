@@ -51,6 +51,17 @@ class DataCollector:
         if action == "RIGHT":
             return 3
 
+    @staticmethod
+    def parse_num_into_action(number):
+        if number == 0:
+            return "UP"
+        if number == 1:
+            return "DOWN"
+        if number == 2:
+            return "LEFT"
+        if number == 3:
+            return "RIGHT"
+
     def preprocess_captured_data(self):
         pass
 
@@ -100,11 +111,16 @@ class DataCollector:
             return data_frame, labels
 
     @staticmethod
-    def update_labels_to_int_values(label_data_frame):
+    def update_labels_to_int_values(label_data_frame, return_as_num_array=False):
+        # this is lazy and ugly, needs correction
         label_data_frame = label_data_frame.replace("UP", 0)
         label_data_frame = label_data_frame.replace("DOWN", 1)
         label_data_frame = label_data_frame.replace("LEFT", 2)
         label_data_frame = label_data_frame.replace("RIGHT", 3)
+
+        if return_as_num_array:
+            label_data_frame = DataCollector.convert_labels_to_numerical_array(label_data_frame)
+
         return label_data_frame
 
     @staticmethod
@@ -112,3 +128,13 @@ class DataCollector:
         min_max_scaler = preprocessing.MinMaxScaler()
         data_frame_scaled = min_max_scaler.fit_transform(data_frame)
         return pd.DataFrame(data_frame_scaled)
+
+    @staticmethod
+    def convert_labels_to_numerical_array(label_data_frame):
+        numerical_array_series = []
+        for key, value in label_data_frame.items():
+            numerical_array = [0, 0, 0, 0]
+            numerical_array[value] = 1
+            numerical_array_series.append(numerical_array)
+
+        return numerical_array_series

@@ -24,8 +24,19 @@ if __name__ == '__main__':
     df_test_data, df_test_labels = DataCollector.extract_labels_from_data_frame(df_test, column_name="action")
 
     df_train_labels = DataCollector.update_labels_to_int_values(df_train_labels)
-    df_train_data = DataCollector.normalize_data_frame_data(df_train_data)
+    df_train_labels = df_train_labels.to_numpy()
+
+    df_test_labels = DataCollector.update_labels_to_int_values(df_test_labels)
+    df_test_labels = df_test_labels.to_numpy()
+
+    # DO NOT NORMALIZE DATA FOR NOW
+    # REASON: we need to teach model true pixel values in order to elaborate for the data set, when it will come to
+    # mode later. Give it up for now, normalization will come after model optimisation, now it's not necessary.
+    # df_train_data = DataCollector.normalize_data_frame_data(df_train_data)
     # df_train_labels = DataCollector.normalize_data_frame_data(df_train_labels.reshape(1, -1))
 
     am = ArtificialModel()
-    am.train_model(df_train_data, df_train_labels, df_test_data, df_test_labels)
+    model = am.train_model(df_train_data, df_train_labels, df_test_data, df_test_labels)
+
+    main_game = Game()
+    main_game.play(model)

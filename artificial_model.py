@@ -1,27 +1,34 @@
-from keras.models import Sequential
-from keras.layers import Dense
-from keras.layers import LSTM
 import tensorflow as tf
 import numpy as np
+
 
 class ArtificialModel:
     def train_model(self, dataset_train, dataset_train_labels, dataset_test, dataset_test_labels):
         # Dirty non working model for now
 
         dataset_train_labels = np.asarray(dataset_train_labels).astype('float32').reshape((-1, 1))
-        # dataset_test_labels = np.asarray(dataset_test_labels).astype('float32').reshape((-1, 1))
+        dataset_test_labels = np.asarray(dataset_test_labels).astype('float32').reshape((-1, 1))
 
-        print(dataset_train.shape[0], dataset_train.shape[1])
-        model = Sequential()
-        model.add(Dense(128, activation="relu"))
-        model.add(Dense(96, activation="relu"))
-        model.add(Dense(40, activation="relu"))
-        model.add(Dense(26, activation="relu"))
-        model.add(Dense(14, activation="relu"))
-        model.add(Dense(4, activation="softmax"))
+        tf.keras.backend.clear_session()
+        model = tf.keras.models.Sequential()
 
-        model.compile(optimizer='adam',
-                      loss=tf.keras.losses.BinaryCrossentropy(),
+        # Dense layers
+        model.add(tf.keras.layers.Dense(182, activation="relu"))
+        model.add(tf.keras.layers.Dropout(0.2))
+        model.add(tf.keras.layers.Dense(86, activation="relu"))
+        model.add(tf.keras.layers.Dense(40, activation="relu"))
+        model.add(tf.keras.layers.Dropout(0.2))
+        model.add(tf.keras.layers.Dense(15, activation="relu"))
+        model.add(tf.keras.layers.Dense(4, activation="softmax", name="output_layer"))
+
+        model.compile(optimizer=tf.keras.optimizers.Adam(),
+                      loss="sparse_categorical_crossentropy",
                       metrics=['accuracy'])
 
+        print(dataset_train_labels.shape)
         model.fit(dataset_train, dataset_train_labels, epochs=20)
+
+        print("Finished training")
+        model.evaluate(x=dataset_test, y=dataset_test_labels, batch_size=128)
+
+        return model
