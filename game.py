@@ -177,7 +177,7 @@ class Game:
                     pygame.quit()
 
                 if not model:
-                    self.process_event(event)
+                    self.process_event()
 
             if not model:
                 player.move_head_to_position(self.head_direction, self.score)
