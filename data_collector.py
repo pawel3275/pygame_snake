@@ -4,34 +4,15 @@ import numpy as np
 from sklearn.utils import shuffle
 from sklearn import preprocessing
 
+
 class DataCollector:
     training_data_movement = []
-    training_data_note = {"distance_from_food_top": 0,
-                          "distance_from_food_bottom": 0,
-                          "distance_from_food_left": 0,
-                          "distance_from_food_right": 0,
-                          "distance_from_wall_top": 0,
-                          "distance_from_wall_left": 0,
-                          "distance_from_wall_right": 0,
-                          "distance_from_wall_bottom": 0,
-                          "distance_from_body_top": 0,
-                          "distance_from_body_left": 0,
-                          "distance_from_body_right": 0,
-                          "distance_from_body_bottom": 0,
+    training_data_note = {"distance_from_food_x": 0,
+                          "distance_from_food_y": 0,
                           "action": ""}
 
-    csv_columns = ["distance_from_food_top",
-                   "distance_from_food_bottom",
-                   "distance_from_food_left",
-                   "distance_from_food_right",
-                   "distance_from_wall_top",
-                   "distance_from_wall_left",
-                   "distance_from_wall_right",
-                   "distance_from_wall_bottom",
-                   "distance_from_body_top",
-                   "distance_from_body_left",
-                   "distance_from_body_right",
-                   "distance_from_body_bottom",
+    csv_columns = ["distance_from_food_x",
+                   "distance_from_food_y",
                    "action"]
 
     def __init__(self):

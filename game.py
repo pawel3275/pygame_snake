@@ -57,12 +57,12 @@ class Game:
 
     def check_for_wall_collision(self, player):
         if player.head_position_x <= 0 or player.head_position_x >= 500:
-            self.game_ended = True
+            #self.game_ended = True
             print("GAME ENDED")
             print("Score:", self.score)
 
         if player.head_position_y <= 0 or player.head_position_y >= 500:
-            self.game_ended = True
+            #self.game_ended = True
             print("GAME ENDED")
             print("Score:", self.score)
 
@@ -83,74 +83,11 @@ class Game:
         node_to_fill = {}
         current_direction = self.head_direction
 
-        # Calculate distance from wall. Should sum to height and width
-        node_to_fill["distance_from_wall_right"] = abs(player.head_position_x - self.height)
-        node_to_fill["distance_from_wall_left"] = player.head_position_x
-        node_to_fill["distance_from_wall_bottom"] = abs(player.head_position_y - self.width)
-        node_to_fill["distance_from_wall_top"] = player.head_position_y
+        vertical = (player.head_position_y - point_position_y) / 500  # pretend we normalize things for now
+        horizontal = (player.head_position_x - point_position_x) / 500  # pretend we normalize things for now
 
-        # Calculate distance from body part
-        # Fill initial zero values. Zero means there is no body part in that direction.
-        node_to_fill["distance_from_body_top"] = 0
-        node_to_fill["distance_from_body_bottom"] = 0
-        node_to_fill["distance_from_body_left"] = 0
-        node_to_fill["distance_from_body_right"] = 0
-
-        for node in player.nodes:
-            if not player.nodes:
-                break
-
-            player_node_pos_x = node[0]
-            player_node_pos_y = node[1]
-
-            if player.head_position_x == player_node_pos_x:
-                # We detected our body on our top or bottom from head
-                if player.head_position_y > player_node_pos_y and (node_to_fill["distance_from_body_top"] > abs(player.head_position_y - player_node_pos_y) or node_to_fill["distance_from_body_top"] == 0):
-                    # our node is at the top from us
-                    node_to_fill["distance_from_body_top"] = abs(player.head_position_y - player_node_pos_y)
-                if player.head_position_y < player_node_pos_y and (node_to_fill["distance_from_body_bottom"] > abs(player.head_position_y - player_node_pos_y) or node_to_fill["distance_from_body_bottom"] == 0):
-                    # our node is at the bottom from us
-                    node_to_fill["distance_from_body_bottom"] = abs(player.head_position_y - player_node_pos_y)
-
-            if player.head_position_y == player_node_pos_y:
-                # We detected our body on our left or right from head
-                if player.head_position_x > player_node_pos_x and (node_to_fill["distance_from_body_left"] > abs(player.head_position_x - player_node_pos_x) or node_to_fill["distance_from_body_left"] == 0):
-                    # our node is at the right from us
-                    node_to_fill["distance_from_body_left"] = abs(player.head_position_x - player_node_pos_x)
-
-                if player.head_position_x < player_node_pos_x and (node_to_fill["distance_from_body_right"] > abs(player.head_position_x - player_node_pos_x) or node_to_fill["distance_from_body_right"] == 0):
-                    # our node is at the left from us
-                    node_to_fill["distance_from_body_right"] = abs(player.head_position_x - player_node_pos_x)
-
-        # Calculate distance from food
-        node_to_fill["distance_from_food_top"] = 0
-        node_to_fill["distance_from_food_bottom"] = 0
-        node_to_fill["distance_from_food_left"] = 0
-        node_to_fill["distance_from_food_right"] = 0
-
-        vertical = point_position_y - player.head_position_y
-        horizontal = point_position_x - player.head_position_x
-
-        if vertical > 0 and horizontal > 0:
-            # right lower corner
-            node_to_fill["distance_from_food_top"] = abs(vertical)
-            node_to_fill["distance_from_food_right"] = abs(horizontal)
-
-        if vertical < 0 and horizontal < 0:
-            # lower upper corner
-            node_to_fill["distance_from_food_bottom"] = abs(vertical)
-            node_to_fill["distance_from_food_left"] = abs(horizontal)
-
-        if vertical > 0 and horizontal < 0:
-            # left lower corner
-            node_to_fill["distance_from_food_top"] = abs(vertical)
-            node_to_fill["distance_from_food_left"] = abs(horizontal)
-
-        if vertical < 0 and horizontal > 0:
-            # right upper corner
-            node_to_fill["distance_from_food_bottom"] = abs(vertical)
-            node_to_fill["distance_from_food_right"] = abs(horizontal)
-
+        node_to_fill["distance_from_food_x"] = horizontal
+        node_to_fill["distance_from_food_y"] = vertical
         node_to_fill["action"] = current_direction
 
         return node_to_fill

@@ -13,9 +13,11 @@ class ArtificialModel:
         model = tf.keras.models.Sequential()
 
         # Dense layers
+        model.add(tf.keras.layers.Dense(6, activation="tanh"))
+        model.add(tf.keras.layers.Dense(18, activation="relu"))
+        model.add(tf.keras.layers.Dropout(0.2))
+        model.add(tf.keras.layers.Dense(24, activation="sigmoid"))
         model.add(tf.keras.layers.Dense(8, activation="relu"))
-        model.add(tf.keras.layers.Dense(12, activation="relu"))
-        model.add(tf.keras.layers.Dense(6, activation="relu"))
         model.add(tf.keras.layers.Dense(4, activation="softmax", name="output_layer"))
 
         model.compile(optimizer=tf.keras.optimizers.Adam(),
