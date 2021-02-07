@@ -6,7 +6,7 @@ from artificial_model import ArtificialModel
 
 def runAI():
     print("AI MODE")
-    data = DataCollector.load_data_from_csv_to_data_frame("D:\\scratch\\snake\\gameDataset_1.csv")
+    data = DataCollector.load_data_from_csv_to_data_frame("D:\\scratch\\snake\\gameDataset_base.csv")
 
     df_train, df_test = DataCollector.split_data_frame_to_train_and_test(data, shuffle_rows=True)
 

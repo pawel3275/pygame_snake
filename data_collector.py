@@ -47,7 +47,7 @@ class DataCollector:
         pass
 
     def save_data_as_csv(self, filename="gameDataset.csv"):
-        with open(filename, "w") as csvfile:
+        with open(filename, "w+") as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=self.csv_columns)
             writer.writeheader()
             for data in self.training_data_movement:

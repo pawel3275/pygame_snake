@@ -40,7 +40,7 @@ class Game:
             return
 
     def check_for_point_consumption(self, player, point_position_x, point_position_y):
-        scale_factor = 8
+        scale_factor = 15
         player_position_x_upper = player.head_position_x + scale_factor
         player_position_x_lower = player.head_position_x - scale_factor
 
@@ -73,7 +73,7 @@ class Game:
             node_position_x, node_position_y = player.nodes[iterator]
 
             if player.head_position_x == node_position_x and player.head_position_y == node_position_y:
-                self.game_ended = True
+                # self.game_ended = True
                 print("Head Collided with: ", iterator, node_position_x, node_position_y)
                 print("GAME ENDED YOU ATE YOURSELF")
                 print("Score:", self.score)
@@ -111,6 +111,7 @@ class Game:
 
             for event in pygame.event.get():
                 if event.type is pygame.QUIT:
+                    self.collector.save_data_as_csv()
                     pygame.quit()
 
                 if not model:
@@ -120,6 +121,7 @@ class Game:
                 player.move_head_to_position(self.head_direction, self.score)
             else:
                 direction = DataCollector.parse_num_into_action(prediction)
+                self.head_direction = direction
                 player.move_head_to_position(direction, self.score)
 
             player.draw_nodes(screen)
