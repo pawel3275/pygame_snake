@@ -31,3 +31,9 @@ class ArtificialModel:
         model.evaluate(x=dataset_test, y=dataset_test_labels, batch_size=128)
 
         return model
+
+    @staticmethod
+    def get_wall_distance_factor(x):
+        # Returns max value 1 for middle of screen 250 ,250 after normalizing.
+        # Return 0 for values close to 0 and 500
+        return (-4*(x*x))+(4*x)
