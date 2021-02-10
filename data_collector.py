@@ -9,10 +9,14 @@ class DataCollector:
     training_data_movement = []
     training_data_note = {"distance_from_food_x": 0,
                           "distance_from_food_y": 0,
+                          "distance_from_wall_x": 0,
+                          "distance_from_wall_y": 0,
                           "action": ""}
 
     csv_columns = ["distance_from_food_x",
                    "distance_from_food_y",
+                   "distance_from_wall_x",
+                   "distance_from_wall_y",
                    "action"]
 
     def __init__(self):

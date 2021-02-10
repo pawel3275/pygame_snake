@@ -4,6 +4,7 @@ import pygame
 from score import Score
 from data_collector import DataCollector
 import numpy as np
+from artificial_model import ArtificialModel
 
 
 class Game:
@@ -83,11 +84,16 @@ class Game:
         node_to_fill = {}
         current_direction = self.head_direction
 
-        vertical = (player.head_position_y - point_position_y) / 500  # pretend we normalize things for now
-        horizontal = (player.head_position_x - point_position_x) / 500  # pretend we normalize things for now
+        vertical_food_vector = (player.head_position_y - point_position_y) / 500  # pretend we normalize things for now
+        horizontal_food_vector = (player.head_position_x - point_position_x) / 500  # pretend we normalize things for now
 
-        node_to_fill["distance_from_food_x"] = horizontal
-        node_to_fill["distance_from_food_y"] = vertical
+        vertical_wall_vector = ArtificialModel.get_wall_distance_factor(player.head_position_y / 500)
+        horizontal_wall_vector = ArtificialModel.get_wall_distance_factor(player.head_position_x / 500)
+
+        node_to_fill["distance_from_food_x"] = horizontal_food_vector
+        node_to_fill["distance_from_food_y"] = vertical_food_vector
+        node_to_fill["distance_from_wall_x"] = horizontal_wall_vector
+        node_to_fill["distance_from_wall_y"] = vertical_wall_vector
         node_to_fill["action"] = current_direction
 
         return node_to_fill
@@ -139,6 +145,7 @@ class Game:
             pygame.display.update()
 
             if model:
+
                 values = list(data_node.values())
                 values = values[:-1]
                 values = np.array(values)

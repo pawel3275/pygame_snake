@@ -10,12 +10,9 @@ def runAI():
 
     df_train, df_test = DataCollector.split_data_frame_to_train_and_test(data, shuffle_rows=True)
 
-    # Experiment, lets drop few columns
-    # df_train.drop(columns=['distance_from_wall_top', 'distance_from_wall_left', 'distance_from_wall_right', 'distance_from_wall_bottom', 'distance_from_body_top', 'distance_from_body_left', 'distance_from_body_right', 'distance_from_body_bottom'])
-    # df_test.drop(columns=['distance_from_wall_top', 'distance_from_wall_left', 'distance_from_wall_right', 'distance_from_wall_bottom', 'distance_from_body_top', 'distance_from_body_left', 'distance_from_body_right', 'distance_from_body_bottom'])
-
     df_train_data, df_train_labels = DataCollector.extract_labels_from_data_frame(df_train, column_name="action")
     df_test_data, df_test_labels = DataCollector.extract_labels_from_data_frame(df_test, column_name="action")
+
 
     df_train_labels = DataCollector.update_labels_to_int_values(df_train_labels)
     df_train_labels = df_train_labels.to_numpy()
@@ -45,7 +42,7 @@ if __name__ == '__main__':
     #choice = input("Choose option: ")
     # choice = "1"
     #if choice == "1":
-    #main_game = Game()
-    #main_game.play(None)
+    main_game = Game()
+    main_game.play(None)
     # else:
-    runAI()
+    #runAI()

@@ -25,7 +25,7 @@ class ArtificialModel:
                       loss="sparse_categorical_crossentropy",
                       metrics=['accuracy'])
 
-        model.fit(dataset_train, dataset_train_labels, epochs=45, shuffle=True)
+        model.fit(dataset_train, dataset_train_labels, epochs=15, shuffle=True)
 
         print("Finished training")
         model.evaluate(x=dataset_test, y=dataset_test_labels, batch_size=128)
@@ -34,6 +34,7 @@ class ArtificialModel:
 
     @staticmethod
     def get_wall_distance_factor(x):
+        # Note, for the best usage pass normalized number
         # Returns max value 1 for middle of screen 250 ,250 after normalizing.
         # Return 0 for values close to 0 and 500
-        return (-4*(x*x))+(4*x)
+        return round((-4*(x*x))+(4*x), 4)
