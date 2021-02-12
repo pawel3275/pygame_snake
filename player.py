@@ -8,10 +8,10 @@ class Player:
     velocity = 5
     nodes = []
 
-    body_distances = {"top": -100,
-                      "bottom": 100,
-                      "left": -100,
-                      "right": 100}
+    body_distances = {"top": -1,
+                      "bottom": 1,
+                      "left": -1,
+                      "right": 1}
 
     def __init__(self, head_start_position_x, head_start_position_y):
         self.head_position_x = head_start_position_x
@@ -41,10 +41,10 @@ class Player:
         self.nodes[0] = (self.head_position_x, self.head_position_y)
 
     def draw_nodes(self, screen):
-        self.body_distances["top"] = -100
-        self.body_distances["bottom"] = 100
-        self.body_distances["left"] = -100
-        self.body_distances["right"] = 100
+        self.body_distances["top"] = -1
+        self.body_distances["bottom"] = 1
+        self.body_distances["left"] = -1
+        self.body_distances["right"] = 1
 
         for node in self.nodes:
             position_x, position_y = node
