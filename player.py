@@ -8,6 +8,11 @@ class Player:
     velocity = 5
     nodes = []
 
+    body_distances = {"top": -100,
+                      "bottom": 100,
+                      "left": -100,
+                      "right": 100}
+
     def __init__(self, head_start_position_x, head_start_position_y):
         self.head_position_x = head_start_position_x
         self.head_position_y = head_start_position_y
@@ -36,10 +41,41 @@ class Player:
         self.nodes[0] = (self.head_position_x, self.head_position_y)
 
     def draw_nodes(self, screen):
+        self.body_distances["top"] = -100
+        self.body_distances["bottom"] = 100
+        self.body_distances["left"] = -100
+        self.body_distances["right"] = 100
+
         for node in self.nodes:
             position_x, position_y = node
+            if position_x == self.head_position_x or position_y == self.head_position_y:
+                self.populate_vectors_in_respect_to_head(position_x, position_y)
+
             pygame.draw.circle(screen, (255, 0, 0), (position_x, position_y), 8, 4)
 
+    def populate_vectors_in_respect_to_head(self, position_x, position_y):
+        # TODO: refacor this function and closest_hit parameters, if they will take effect during training.
+        vertical = (position_y - self.head_position_y) / 500
+        horizontal = (position_x - self.head_position_x) / 500
+
+        if horizontal == 0 and vertical == 0:
+            return
+
+        if horizontal == 0 and 0 > vertical > self.body_distances["top"]:  # node on the top
+            self.body_distances["top"] = vertical
+            return
+
+        if horizontal == 0 and 0 < vertical < self.body_distances["bottom"]:  # node on the bottom
+            self.body_distances["bottom"] = vertical
+            return
+
+        if vertical == 0 and 0 < horizontal > self.body_distances["left"]:  # node on the left
+            self.body_distances["left"] = horizontal
+            return
+
+        if vertical == 0 and 0 < horizontal < self.body_distances["right"]:  # node on the right
+            self.body_distances["right"] = horizontal
+            return
 
 
 

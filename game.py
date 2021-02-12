@@ -145,7 +145,6 @@ class Game:
             pygame.display.update()
 
             if model:
-
                 values = list(data_node.values())
                 values = values[:-1]
                 values = np.array(values)
