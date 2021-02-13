@@ -69,7 +69,7 @@ class Player:
             self.body_distances["bottom"] = vertical
             return
 
-        if vertical == 0 and 0 < horizontal > self.body_distances["left"]:  # node on the left
+        if vertical == 0 and 0 > horizontal > self.body_distances["left"]:  # node on the left
             self.body_distances["left"] = horizontal
             return
 

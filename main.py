@@ -6,13 +6,20 @@ from artificial_model import ArtificialModel
 
 def runAI():
     print("AI MODE")
-    data = DataCollector.load_data_from_csv_to_data_frame("D:\\scratch\\snake\\gameDataset_base.csv")
+    data = DataCollector.load_data_from_csv_to_data_frame("D:\\scratch\\snake\\gameDataset_test1.csv")
 
     df_train, df_test = DataCollector.split_data_frame_to_train_and_test(data, shuffle_rows=True)
+    # this makes snake to embrace the walls too match hence dropping the column now for test purposes
+    #df_train = df_train.drop(['distance_from_wall_x', 'distance_from_wall_y'], axis=1)
+    df_train = df_train.drop(['distance_from_body_top', 'distance_from_body_bottom'], axis=1)
+    df_train = df_train.drop(['distance_from_body_left', 'distance_from_body_right'], axis=1)
+
+    #df_test = df_test.drop(['distance_from_wall_x', 'distance_from_wall_y'], axis=1)
+    df_test = df_test.drop(['distance_from_body_top', 'distance_from_body_bottom'], axis=1)
+    df_test = df_test.drop(['distance_from_body_left', 'distance_from_body_right'], axis=1)
 
     df_train_data, df_train_labels = DataCollector.extract_labels_from_data_frame(df_train, column_name="action")
     df_test_data, df_test_labels = DataCollector.extract_labels_from_data_frame(df_test, column_name="action")
-
 
     df_train_labels = DataCollector.update_labels_to_int_values(df_train_labels)
     df_train_labels = df_train_labels.to_numpy()
@@ -42,7 +49,7 @@ if __name__ == '__main__':
     #choice = input("Choose option: ")
     # choice = "1"
     #if choice == "1":
-    main_game = Game()
-    main_game.play(None)
+    #main_game = Game()
+    #main_game.play(None)
     # else:
-    #runAI()
+    runAI()

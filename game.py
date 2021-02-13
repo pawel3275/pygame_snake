@@ -94,6 +94,12 @@ class Game:
         node_to_fill["distance_from_food_y"] = vertical_food_vector
         node_to_fill["distance_from_wall_x"] = horizontal_wall_vector
         node_to_fill["distance_from_wall_y"] = vertical_wall_vector
+
+        node_to_fill["distance_from_body_top"] = player.body_distances["top"]
+        node_to_fill["distance_from_body_bottom"] = player.body_distances["bottom"]
+        node_to_fill["distance_from_body_left"] = player.body_distances["left"]
+        node_to_fill["distance_from_body_right"] = player.body_distances["right"]
+
         node_to_fill["action"] = current_direction
 
         return node_to_fill
@@ -145,6 +151,15 @@ class Game:
             pygame.display.update()
 
             if model:
+                ## removal
+                # del data_node["distance_from_wall_x"]
+                # del data_node["distance_from_wall_y"]
+                del data_node["distance_from_body_top"]
+                del data_node["distance_from_body_right"]
+                del data_node["distance_from_body_bottom"]
+                del data_node["distance_from_body_left"]
+                ##
+
                 values = list(data_node.values())
                 values = values[:-1]
                 values = np.array(values)

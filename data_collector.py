@@ -11,12 +11,20 @@ class DataCollector:
                           "distance_from_food_y": 0,
                           "distance_from_wall_x": 0,
                           "distance_from_wall_y": 0,
+                          "distance_from_body_top": 0,
+                          "distance_from_body_bottom": 0,
+                          "distance_from_body_left": 0,
+                          "distance_from_body_right": 0,
                           "action": ""}
 
     csv_columns = ["distance_from_food_x",
                    "distance_from_food_y",
                    "distance_from_wall_x",
                    "distance_from_wall_y",
+                   "distance_from_body_top",
+                   "distance_from_body_bottom",
+                   "distance_from_body_left",
+                   "distance_from_body_right",
                    "action"]
 
     def __init__(self):
