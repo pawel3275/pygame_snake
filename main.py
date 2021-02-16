@@ -10,11 +10,11 @@ def runAI():
 
     df_train, df_test = DataCollector.split_data_frame_to_train_and_test(data, shuffle_rows=True)
     # this makes snake to embrace the walls too match hence dropping the column now for test purposes
-    #df_train = df_train.drop(['distance_from_wall_x', 'distance_from_wall_y'], axis=1)
+    # df_train = df_train.drop(['distance_from_wall_x', 'distance_from_wall_y'], axis=1)
     df_train = df_train.drop(['distance_from_body_top', 'distance_from_body_bottom'], axis=1)
     df_train = df_train.drop(['distance_from_body_left', 'distance_from_body_right'], axis=1)
 
-    #df_test = df_test.drop(['distance_from_wall_x', 'distance_from_wall_y'], axis=1)
+    # df_test = df_test.drop(['distance_from_wall_x', 'distance_from_wall_y'], axis=1)
     df_test = df_test.drop(['distance_from_body_top', 'distance_from_body_bottom'], axis=1)
     df_test = df_test.drop(['distance_from_body_left', 'distance_from_body_right'], axis=1)
 
@@ -46,10 +46,10 @@ if __name__ == '__main__':
     print("**********************************************")
     print("1. Play game and collect data.")
     print("2. Run AI.")
-    #choice = input("Choose option: ")
+    # choice = input("Choose option: ")
     # choice = "1"
-    #if choice == "1":
-    #main_game = Game()
-    #main_game.play(None)
+    # if choice == "1":
+    main_game = Game()
+    main_game.play(None)
     # else:
-    runAI()
+    # runAI()

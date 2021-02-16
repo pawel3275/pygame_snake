@@ -15,7 +15,9 @@ class DataCollector:
                           "distance_from_body_bottom": 0,
                           "distance_from_body_left": 0,
                           "distance_from_body_right": 0,
-                          "action": ""}
+                          "action": "",
+                          "mode": "EAT",
+                          "score": 0}
 
     csv_columns = ["distance_from_food_x",
                    "distance_from_food_y",
@@ -25,7 +27,11 @@ class DataCollector:
                    "distance_from_body_bottom",
                    "distance_from_body_left",
                    "distance_from_body_right",
-                   "action"]
+                   "action",
+                   "mode",
+                   "score"]
+
+    possible_modes = ["DODGE_BODY", "DODGE_WALL", "EAT"]
 
     def __init__(self):
         pass

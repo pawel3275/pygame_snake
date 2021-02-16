@@ -20,6 +20,8 @@ class Game:
         self.player = Player(int(width / 2), int(height / 2))
         self.collector = DataCollector()
         self.scoreboard = Score()
+        self.wall_collision_factor = 0.05
+        self.body_collision_factor = 0.05
 
     def process_event(self):
         key = pygame.key.get_pressed()
@@ -50,7 +52,6 @@ class Game:
 
         if player_position_x_lower < point_position_x < player_position_x_upper and \
                 player_position_y_lower < point_position_y < player_position_y_upper:
-            print("Point has been consumed")
             self.score += 1
             return True
         else:
@@ -58,14 +59,16 @@ class Game:
 
     def check_for_wall_collision(self, player):
         if player.head_position_x <= 0 or player.head_position_x >= 500:
-            #self.game_ended = True
-            print("GAME ENDED")
-            print("Score:", self.score)
+            pass
+            # self.game_ended = True
+            # print("GAME ENDED")
+            # print("Score:", self.score)
 
         if player.head_position_y <= 0 or player.head_position_y >= 500:
-            #self.game_ended = True
-            print("GAME ENDED")
-            print("Score:", self.score)
+            pass
+            # self.game_ended = True
+            # print("GAME ENDED")
+            # print("Score:", self.score)
 
         pass
 
@@ -74,10 +77,11 @@ class Game:
             node_position_x, node_position_y = player.nodes[iterator]
 
             if player.head_position_x == node_position_x and player.head_position_y == node_position_y:
+                pass
                 # self.game_ended = True
-                print("Head Collided with: ", iterator, node_position_x, node_position_y)
-                print("GAME ENDED YOU ATE YOURSELF")
-                print("Score:", self.score)
+                # print("Head Collided with: ", iterator, node_position_x, node_position_y)
+                # print("GAME ENDED YOU ATE YOURSELF")
+                # print("Score:", self.score)
         pass
 
     def obtain_distances_from_head(self, player, point_position_x, point_position_y):
@@ -85,21 +89,39 @@ class Game:
         current_direction = self.head_direction
 
         vertical_food_vector = (player.head_position_y - point_position_y) / 500  # pretend we normalize things for now
-        horizontal_food_vector = (player.head_position_x - point_position_x) / 500  # pretend we normalize things for now
+        horizontal_food_vector = (
+                                         player.head_position_x - point_position_x) / 500  # pretend we normalize things for now
 
         vertical_wall_vector = ArtificialModel.get_wall_distance_factor(player.head_position_y / 500)
         horizontal_wall_vector = ArtificialModel.get_wall_distance_factor(player.head_position_x / 500)
+
+        node_to_fill["mode"] = DataCollector.possible_modes[2]  # by default eat
 
         node_to_fill["distance_from_food_x"] = horizontal_food_vector
         node_to_fill["distance_from_food_y"] = vertical_food_vector
         node_to_fill["distance_from_wall_x"] = horizontal_wall_vector
         node_to_fill["distance_from_wall_y"] = vertical_wall_vector
 
-        node_to_fill["distance_from_body_top"] = player.body_distances["top"]
-        node_to_fill["distance_from_body_bottom"] = player.body_distances["bottom"]
-        node_to_fill["distance_from_body_left"] = player.body_distances["left"]
-        node_to_fill["distance_from_body_right"] = player.body_distances["right"]
+        top = abs(float(player.body_distances["top"]))
+        bottom = abs(float(player.body_distances["bottom"]))
+        left = abs(float(player.body_distances["left"]))
+        right = abs(float(player.body_distances["right"]))
 
+        node_to_fill["distance_from_body_top"] = top
+        node_to_fill["distance_from_body_bottom"] = bottom
+        node_to_fill["distance_from_body_left"] = left
+        node_to_fill["distance_from_body_right"] = right
+
+        if (top < self.body_collision_factor and current_direction != "DOWN") or \
+                (bottom < self.body_collision_factor and current_direction != "UP") or \
+                (left < self.body_collision_factor and current_direction != "RIGHT") or \
+                (right < self.body_collision_factor and current_direction != "LEFT"):
+            node_to_fill["mode"] = DataCollector.possible_modes[0]  # collision ahead, report it
+
+        if horizontal_wall_vector < self.wall_collision_factor or vertical_wall_vector < self.wall_collision_factor:
+            node_to_fill["mode"] = DataCollector.possible_modes[1]  # collision ahead, report it
+
+        node_to_fill["score"] = self.score
         node_to_fill["action"] = current_direction
 
         return node_to_fill
