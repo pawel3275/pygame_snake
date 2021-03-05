@@ -61,9 +61,6 @@ class DataCollector:
         if number == 3:
             return "RIGHT"
 
-    def preprocess_captured_data(self):
-        pass
-
     def save_data_as_csv(self, filename="gameDataset.csv"):
         with open(filename, "w+") as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=self.csv_columns)
@@ -137,3 +134,5 @@ class DataCollector:
             numerical_array_series.append(numerical_array)
 
         return numerical_array_series
+
+

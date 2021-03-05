@@ -2,21 +2,17 @@ import pygame
 
 
 class Player:
-    length = 0
-    head_position_x = 0
-    head_position_y = 0
-    velocity = 5
-    nodes = []
-
-    body_distances = {"top": -1,
-                      "bottom": 1,
-                      "left": -1,
-                      "right": 1}
-
     def __init__(self, head_start_position_x, head_start_position_y):
+        self.length = 0
+        self.velocity = 5
+        self.nodes = []
         self.head_position_x = head_start_position_x
         self.head_position_y = head_start_position_y
         self.nodes.append((head_start_position_x, head_start_position_y))
+        self.body_distances = {"top": -1,
+                               "bottom": 1,
+                               "left": -1,
+                               "right": 1}
 
     def move_head_to_position(self, direction, score):
         if len(self.nodes) <= score:
