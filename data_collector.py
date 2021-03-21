@@ -3,70 +3,53 @@ import pandas as pd
 import numpy as np
 from sklearn.utils import shuffle
 from sklearn import preprocessing
-
+import os
 
 class DataCollector:
-    training_data_movement = []
-    training_data_note = {"distance_from_food_x": 0,
-                          "distance_from_food_y": 0,
-                          "distance_from_wall_x": 0,
-                          "distance_from_wall_y": 0,
-                          "distance_from_body_top": 0,
-                          "distance_from_body_bottom": 0,
-                          "distance_from_body_left": 0,
-                          "distance_from_body_right": 0,
+    training_data_note = {"vector_from_food_x": 0,
+                          "vector_from_food_y": 0,
+                          "vector_from_wall_x": 0,
+                          "vector_from_wall_y": 0,
+                          "is_food_on_top": 0,
+                          "is_food_on_bottom": 0,
+                          "is_food_on_left": 0,
+                          "is_food_on_right": 0,
+                          "is_obstacle_on_top": 0,
+                          "is_obstacle_on_bottom": 0,
+                          "is_obstacle_on_left": 0,
+                          "is_obstacle_on_right": 0,
                           "action": "",
-                          "mode": "EAT",
                           "score": 0}
 
-    csv_columns = ["distance_from_food_x",
-                   "distance_from_food_y",
-                   "distance_from_wall_x",
-                   "distance_from_wall_y",
-                   "distance_from_body_top",
-                   "distance_from_body_bottom",
-                   "distance_from_body_left",
-                   "distance_from_body_right",
+    csv_columns = ["vector_from_food_x",
+                   "vector_from_food_y",
+                   "vector_from_wall_x",
+                   "vector_from_wall_y",
+                   "is_food_on_top",
+                   "is_food_on_bottom",
+                   "is_food_on_left",
+                   "is_food_on_right",
+                   "is_obstacle_on_top",
+                   "is_obstacle_on_bottom",
+                   "is_obstacle_on_left",
+                   "is_obstacle_on_right",
                    "action",
-                   "mode",
                    "score"]
-
-    possible_modes = ["DODGE_BODY", "DODGE_WALL", "EAT"]
 
     def __init__(self):
         pass
 
-    def append_data_node(self, training_node):
-        self.training_data_movement.append(training_node)
-
     @staticmethod
-    def parse_action_into_num(action):
-        if action == "UP":
-            return 0
-        if action == "DOWN":
-            return 1
-        if action == "LEFT":
-            return 2
-        if action == "RIGHT":
-            return 3
-
-    @staticmethod
-    def parse_num_into_action(number):
-        if number == 0:
-            return "UP"
-        if number == 1:
-            return "DOWN"
-        if number == 2:
-            return "LEFT"
-        if number == 3:
-            return "RIGHT"
-
-    def save_data_as_csv(self, filename="gameDataset.csv"):
-        with open(filename, "w+") as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=self.csv_columns)
+    def save_header_to_csv_file(csv_columns, filename="gameDataset.csv"):
+        with open(filename, "a") as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=csv_columns)
             writer.writeheader()
-            for data in self.training_data_movement:
-                writer.writerow(data)
+
+    @staticmethod
+    def save_data_row_to_csv_file(data_row, csv_columns, filename="gameDataset.csv"):
+        with open(filename, "a") as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=csv_columns)
+            writer.writerow(data_row)
 
     @staticmethod
     def load_data_from_csv_to_np_array(file_path, delimiter=",", keep_header=True):
@@ -134,5 +117,3 @@ class DataCollector:
             numerical_array_series.append(numerical_array)
 
         return numerical_array_series
-
-
