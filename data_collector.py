@@ -5,6 +5,7 @@ from sklearn.utils import shuffle
 from sklearn import preprocessing
 import os
 
+
 class DataCollector:
     training_data_note = {"vector_from_food_x": 0,
                           "vector_from_food_y": 0,

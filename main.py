@@ -27,6 +27,7 @@ if __name__ == '__main__':
     print("3. Run reinforced learning.")
     choice = input("Choose option: ")
     if choice == "1":
+        data_set_path = input("Specify input data set path: ")
         main_game = Game()
         main_game.play(None)
 

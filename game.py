@@ -60,7 +60,7 @@ class Game:
         return
 
     def check_if_point_was_consumed(self):
-        scale_factor = 15 # was 15
+        scale_factor = 15
         reward = 0
         player_position_x_upper = self.player.head_position_x + scale_factor
         player_position_x_lower = self.player.head_position_x - scale_factor

@@ -36,4 +36,3 @@ class Player:
         for node in self.nodes:
             position_x, position_y = node
             pygame.draw.circle(screen, (255, 0, 0), (position_x, position_y), 8, 4)
-
