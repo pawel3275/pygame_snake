@@ -7,9 +7,12 @@ import random
 
 
 class Game:
-    def __init__(self, width=250, height=250):
+    def __init__(self, width=250, height=250, save_header_to_file=True):
         pygame.display.set_caption("Snake")
-        DataCollector.save_header_to_csv_file(DataCollector.csv_columns)
+
+        if save_header_to_file:
+            DataCollector.save_header_to_csv_file(DataCollector.csv_columns)
+
         self.clock = pygame.time.Clock()
         self.width = width
         self.height = height
@@ -185,7 +188,6 @@ class Game:
         return self.player
 
     def play(self, model):
-        prediction = 0
         while True and not self.game_ended:
             screen = self.get_screen()
             player = self.get_player()
@@ -199,16 +201,20 @@ class Game:
                 if not model:
                     self.process_event()
 
-            if not model:
-                player.move_head_to_position(self.head_direction, self.score)
-            else:
-                player.move_head_to_position(prediction, self.score)
-
             self.spawn_point(screen)
 
-            self.obtain_distances_from_head()
-
-            DataCollector.save_data_row_to_csv_file(self.game_state, DataCollector.csv_columns)
+            if not model:
+                self.obtain_distances_from_head()
+                DataCollector.save_data_row_to_csv_file(self.game_state, DataCollector.csv_columns)
+                player.move_head_to_position(self.head_direction, self.score)
+            else:
+                game_state_values = np.asarray(self.obtain_distances_from_head(), dtype=np.float32)
+                game_state_values = np.delete(game_state_values, 13)  # Get rid of action
+                game_state_values = np.expand_dims(game_state_values, axis=0)  # Expand dims to 1, 13 tensor
+                game_state_values = np.expand_dims(game_state_values, axis=0)  # Expand dims to 1, 1, 13 tensor
+                prediction_values = model.predict(game_state_values)  # Retrieve array with predictions
+                max_predicted_value = np.argmax(prediction_values)  # Obtain argmax index for predictions
+                player.move_head_to_position(max_predicted_value, self.score)
 
             self.check_if_point_was_consumed()
 
@@ -219,13 +225,6 @@ class Game:
             player.draw_nodes(screen)
 
             pygame.display.update()
-
-            if model:
-                values = list(self.game_state.values())
-                values = values[:-1]
-                values = np.array(values)
-                values = values[np.newaxis, ...]
-                prediction = np.argmax(model.predict(values), axis=1)
 
             if self.game_ended:
                 self.reset_game()

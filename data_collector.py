@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 from sklearn.utils import shuffle
 from sklearn import preprocessing
-import os
 
 
 class DataCollector:
@@ -19,8 +18,8 @@ class DataCollector:
                           "is_obstacle_on_bottom": 0,
                           "is_obstacle_on_left": 0,
                           "is_obstacle_on_right": 0,
-                          "action": "",
-                          "score": 0}
+                          "score": 0,
+                          "action": ""}
 
     csv_columns = ["vector_from_food_x",
                    "vector_from_food_y",
@@ -34,8 +33,8 @@ class DataCollector:
                    "is_obstacle_on_bottom",
                    "is_obstacle_on_left",
                    "is_obstacle_on_right",
-                   "action",
-                   "score"]
+                   "score",
+                   "action"]
 
     def __init__(self):
         pass

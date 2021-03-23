@@ -14,16 +14,16 @@ class Player:
         if len(self.nodes) <= score:
             self.nodes.append((self.head_position_x, self.head_position_y))
 
-        if direction is 0:
+        if direction == 0:
             self.head_position_y = self.head_position_y - self.velocity
 
-        if direction is 1:
+        if direction == 1:
             self.head_position_y = self.head_position_y + self.velocity
 
-        if direction is 2:
+        if direction == 2:
             self.head_position_x = self.head_position_x - self.velocity
 
-        if direction is 3:
+        if direction == 3:
             self.head_position_x = self.head_position_x + self.velocity
 
     def apply_body_movement(self):

@@ -1,21 +1,21 @@
 from game import Game
 from artificial_model import ArtificialModel
 import agent
+import os.path
 
 
-def run_basic_AI_mode():
+def run_basic_artificial_mode(data_set_path):
     print("AI MODE")
-    default_model = ArtificialModel()
-    Game().play(default_model.model)
+    default_model = ArtificialModel(data_set_path)
+    Game(250, 250, False).play(default_model.model)
 
 
-def run_reinforced_learning():
+def run_reinforced_learning_mode():
     agent.train_reinforced_learning()
 
 
-def run_normal_snake():
-    main_game = Game()
-    main_game.play(None)
+def run_normal_snake_mode():
+    Game().play(None)
 
 
 if __name__ == '__main__':
@@ -27,12 +27,15 @@ if __name__ == '__main__':
     print("3. Run reinforced learning.")
     choice = input("Choose option: ")
     if choice == "1":
-        data_set_path = input("Specify input data set path: ")
-        main_game = Game()
-        main_game.play(None)
+        run_normal_snake_mode()
 
     elif choice == "2":
-        run_basic_AI_mode()
+        data_set_path = input("Specify training data set path: ")
+        data_set_path = data_set_path.replace("\"", "")
+        if os.path.isfile(data_set_path):
+            run_basic_artificial_mode(data_set_path)
+        else:
+            print("Data set file does not exist.")
 
     elif choice == "3":
-        run_reinforced_learning()
+        run_reinforced_learning_mode()

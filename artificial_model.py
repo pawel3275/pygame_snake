@@ -10,13 +10,12 @@ import os
 
 
 class ArtificialModel:
-    def __init__(self):
-        self.df_train_data, self.df_train_labels, self.df_test_data, self.df_test_labels = self.obtain_train_data()
+    def __init__(self, data_set_path):
+        self.df_train_data, self.df_train_labels, self.df_test_data, self.df_test_labels = self.obtain_train_data(data_set_path)
         self.model = self.train_model(self.df_train_data, self.df_train_labels, self.df_test_data, self.df_test_labels)
 
     @staticmethod
-    def obtain_train_data(path_to_data="D:\\scratch\\snake\\gameDataset_1.csv", should_shuffle_rows=True,
-                          label_column_name="action"):
+    def obtain_train_data(path_to_data, should_shuffle_rows=True, label_column_name="action"):
         data = DataCollector.load_data_from_csv_to_data_frame(path_to_data)
 
         df_train, df_test = DataCollector.split_data_frame_to_train_and_test(data, shuffle_rows=should_shuffle_rows)
@@ -41,7 +40,7 @@ class ArtificialModel:
 
         dataset_train = np.expand_dims(dataset_train, axis=1)
         dataset_test = np.expand_dims(dataset_test, axis=1)
-
+        print(dataset_train.shape)
         tf.keras.backend.clear_session()
         model = tf.keras.models.Sequential()
 
