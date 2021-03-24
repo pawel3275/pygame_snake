@@ -41,26 +41,56 @@ class DataCollector:
 
     @staticmethod
     def save_header_to_csv_file(csv_columns, filename="gameDataset.csv"):
+        """
+        Saves header of csv_columns to csv file specified in input param.
+        :param csv_columns: csv columns in lsit format to be inserted to the csv file.
+        :param filename: csv file path.
+        """
         with open(filename, "a") as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=csv_columns)
             writer.writeheader()
 
     @staticmethod
     def save_data_row_to_csv_file(data_row, csv_columns, filename="gameDataset.csv"):
+        """
+        Puts data row specified in input to a file.
+        :param data_row: List of values to be written to a csv file.
+        :param csv_columns: Csv columns,
+        :param filename: Path to the csv file.
+        """
         with open(filename, "a") as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=csv_columns)
             writer.writerow(data_row)
 
     @staticmethod
     def load_data_from_csv_to_np_array(file_path, delimiter=",", keep_header=True):
+        """
+        Loads the whole csv data and returns it as a numpy array type.
+        :param file_path: Path to the
+        :param delimiter: delimeter used in the csv file
+        :param keep_header: Bool to determine whether to keep csv header or not for the first array values.
+        :return: Numpy array with the values.
+        """
         return np.genfromtxt(file_path, dtype=float, delimiter=delimiter, names=keep_header)
 
     @staticmethod
     def load_data_from_csv_to_data_frame(file_path):
+        """
+        Loads data specified in csv file path as param and returns it as pandas data frame.
+        :param file_path: Path to the csv file
+        :return: Data frame with values from csv file.
+        """
         return pd.read_csv(file_path)
 
     @staticmethod
     def split_data_frame_to_train_and_test(data_frame, percent_test_ratio=20, shuffle_rows=False):
+        """
+        Splits the data set to the training and test by a given ratio.
+        :param data_frame: Data frame containing values to be split.
+        :param percent_test_ratio: Percent value of what is the percent of the test values.
+        :param shuffle_rows: If true, then we will shuffle rows inside given data set before split.
+        :return: data frame objects for test and training.
+        """
         if shuffle_rows:
             data_frame = shuffle(data_frame)
 
@@ -75,6 +105,15 @@ class DataCollector:
 
     @staticmethod
     def extract_labels_from_data_frame(data_frame, column_number=-1, column_name=""):
+        """
+        Extracts labels from the data frame and deleted whole labels column returning data set without it. You can
+        provide either column name or the column number to this function in order to cut it out, no need for two at the
+        same time.
+        :param data_frame: data set containing labels column.
+        :param column_number: Column where labels are located.
+        :param column_name: Column name with labels.
+        :return: data set without labels column, and labels as the second data set.
+        """
         if column_name == "" and column_number == -1:
             print("Error provide column number or column name!")
             return data_frame, 0
@@ -90,30 +129,12 @@ class DataCollector:
             return data_frame, labels
 
     @staticmethod
-    def update_labels_to_int_values(label_data_frame, return_as_num_array=False):
-        # this is lazy and ugly, needs correction
-        label_data_frame = label_data_frame.replace("UP", 0)
-        label_data_frame = label_data_frame.replace("DOWN", 1)
-        label_data_frame = label_data_frame.replace("LEFT", 2)
-        label_data_frame = label_data_frame.replace("RIGHT", 3)
-
-        if return_as_num_array:
-            label_data_frame = DataCollector.convert_labels_to_numerical_array(label_data_frame)
-
-        return label_data_frame
-
-    @staticmethod
     def normalize_data_frame_data(data_frame):
+        """
+        Performes normalization of values to a given data frame.
+        :param data_frame: data set on which normalization of values shall be performed.
+        :return: data set with scaled values after normalization.
+        """
         min_max_scaler = preprocessing.MinMaxScaler()
         data_frame_scaled = min_max_scaler.fit_transform(data_frame)
         return pd.DataFrame(data_frame_scaled)
-
-    @staticmethod
-    def convert_labels_to_numerical_array(label_data_frame):
-        numerical_array_series = []
-        for key, value in label_data_frame.items():
-            numerical_array = [0, 0, 0, 0]
-            numerical_array[value] = 1
-            numerical_array_series.append(numerical_array)
-
-        return numerical_array_series

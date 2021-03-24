@@ -5,6 +5,12 @@ plt.ion()
 
 
 def plot(scores, mean_scores):
+    """
+    Helper plotting function that will draw the plot showing the learning curve depending on the score and number of
+    games that had been played.
+    :param scores: Scores that were achieved by the snake.
+    :param mean_scores: Number of mean scores.
+    """
     display.clear_output(wait=True)
     display.display(plt.gcf())
     plt.clf()
