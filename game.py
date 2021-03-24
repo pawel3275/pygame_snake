@@ -1,9 +1,10 @@
 import pygame
+
 from player import Player
-import pygame
-from data_collector import DataCollector
 import numpy as np
 import random
+
+from .data_collector import DataCollector
 
 
 class Game:
@@ -33,7 +34,6 @@ class Game:
         self.head_direction = random.randint(0, 3)
         self.score = 0
         self.reward = 0
-        self.record = 0
         self.game_ended = False
         self.number_of_moves = 0
         self.player = Player(int(self.width / 2), int(self.height / 2))
@@ -137,8 +137,8 @@ class Game:
             self.game_ended = True
 
         # Check for body collision
-        for iterator in range(1, len(self.player.nodes)):
-            body_node_position_x, body_node_position_y = self.player.nodes[iterator]
+        for i in range(1, len(self.player.nodes)):
+            body_node_position_x, body_node_position_y = self.player.nodes[i]
             if self.player.head_position_x == body_node_position_x and self.player.head_position_y == body_node_position_y:
                 penalty = -15
                 self.game_ended = True
@@ -240,7 +240,9 @@ class Game:
         Main game loop function, if the model is present in params, then he will make predictions for the movements.
         :param model: Model which will do predictions of the movements. Provide value of 'None' for default mode
         """
-        while True and not self.game_ended:
+        while not self.game_ended:
+            self.set_clock_tick(15)
+
             screen = self.screen
             player = self.player
 
@@ -281,8 +283,6 @@ class Game:
             if self.game_ended:
                 self.reset_game()
 
-            self.set_clock_tick(15)
-
     @staticmethod
     def divisible_random(a, b, n):
         """
@@ -293,7 +293,7 @@ class Game:
         :return:
         """
         if b - a < n:
-            raise Exception('{} is too big'.format(n))
+            raise Exception(f"{n} is too big")
         result = random.randint(a, b)
         while result % n != 0:
             result = random.randint(a, b)
@@ -308,6 +308,8 @@ class Game:
         :param direction: Direction for the snake to head for.
         :return: Sum of rewards and penalty (penalty is always negative), bool if the game has ended, and game score
         """
+        self.set_clock_tick(60)
+
         for event in pygame.event.get():
             if event.type is pygame.QUIT:
                 pygame.quit()
@@ -332,8 +334,6 @@ class Game:
 
         player.draw_nodes(screen)
         pygame.display.update()
-
-        self.set_clock_tick(60)
 
         return (reward + penalty, game_ended, self.score)
 

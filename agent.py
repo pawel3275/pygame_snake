@@ -12,9 +12,6 @@ LEARNING_RATE = 0.001
 
 class Agent:
     def __init__(self):
-        """
-        Default constructor.
-        """
         self.number_of_games = 1
         self.epsilon = 0  # for randomness
         self.gamma = 0.9  # discount rate, must be smaller than 1

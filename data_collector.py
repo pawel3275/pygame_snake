@@ -6,38 +6,39 @@ from sklearn import preprocessing
 
 
 class DataCollector:
-    training_data_note = {"vector_from_food_x": 0,
-                          "vector_from_food_y": 0,
-                          "vector_from_wall_x": 0,
-                          "vector_from_wall_y": 0,
-                          "is_food_on_top": 0,
-                          "is_food_on_bottom": 0,
-                          "is_food_on_left": 0,
-                          "is_food_on_right": 0,
-                          "is_obstacle_on_top": 0,
-                          "is_obstacle_on_bottom": 0,
-                          "is_obstacle_on_left": 0,
-                          "is_obstacle_on_right": 0,
-                          "score": 0,
-                          "action": ""}
+    training_data_note = {
+        "vector_from_food_x": 0,
+        "vector_from_food_y": 0,
+        "vector_from_wall_x": 0,
+        "vector_from_wall_y": 0,
+        "is_food_on_top": 0,
+        "is_food_on_bottom": 0,
+        "is_food_on_left": 0,
+        "is_food_on_right": 0,
+        "is_obstacle_on_top": 0,
+        "is_obstacle_on_bottom": 0,
+        "is_obstacle_on_left": 0,
+        "is_obstacle_on_right": 0,
+        "score": 0,
+        "action": ""
+    }
 
-    csv_columns = ["vector_from_food_x",
-                   "vector_from_food_y",
-                   "vector_from_wall_x",
-                   "vector_from_wall_y",
-                   "is_food_on_top",
-                   "is_food_on_bottom",
-                   "is_food_on_left",
-                   "is_food_on_right",
-                   "is_obstacle_on_top",
-                   "is_obstacle_on_bottom",
-                   "is_obstacle_on_left",
-                   "is_obstacle_on_right",
-                   "score",
-                   "action"]
-
-    def __init__(self):
-        pass
+    csv_columns = [
+        "vector_from_food_x",
+        "vector_from_food_y",
+        "vector_from_wall_x",
+        "vector_from_wall_y",
+        "is_food_on_top",
+        "is_food_on_bottom",
+        "is_food_on_left",
+        "is_food_on_right",
+        "is_obstacle_on_top",
+        "is_obstacle_on_bottom",
+        "is_obstacle_on_left",
+        "is_obstacle_on_right",
+        "score",
+        "action"
+    ]
 
     @staticmethod
     def save_header_to_csv_file(csv_columns, filename="gameDataset.csv"):
@@ -101,7 +102,7 @@ class DataCollector:
         df_train = data_frame[:train_rows_number]
         df_test = data_frame[test_rows_number:]
 
-        return df_train, df_test
+        return (df_train, df_test)
 
     @staticmethod
     def extract_labels_from_data_frame(data_frame, column_number=-1, column_name=""):
@@ -116,17 +117,17 @@ class DataCollector:
         """
         if column_name == "" and column_number == -1:
             print("Error provide column number or column name!")
-            return data_frame, 0
+            return (data_frame, 0)
 
         if column_number != -1:
             labels = data_frame[data_frame.column[column_number]]
             del data_frame[data_frame.column[column_number]]
-            return data_frame, labels
+            return (data_frame, labels)
 
         elif column_name != "":
             labels = data_frame[column_name]
             del data_frame[column_name]
-            return data_frame, labels
+            return (data_frame, labels)
 
     @staticmethod
     def normalize_data_frame_data(data_frame):

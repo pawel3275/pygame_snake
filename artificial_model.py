@@ -1,12 +1,13 @@
+import os
+
 import tensorflow as tf
 import numpy as np
-from data_collector import DataCollector
-
 import torch
 import torch.nn as nn
 import torch.optim as optim
-import torch.nn.functional as F
-import os
+import torch.nn.functional as func
+
+from .data_collector import DataCollector
 
 
 class ArtificialModel:
@@ -15,7 +16,8 @@ class ArtificialModel:
         Default constructor. Loads data set train and tast from given csv file path and provides prediction model.
         :param data_set_path: File path to the csv file with data set.
         """
-        self.df_train_data, self.df_train_labels, self.df_test_data, self.df_test_labels = self.obtain_train_data(data_set_path)
+        self.df_train_data, self.df_train_labels, self.df_test_data, self.df_test_labels = self.obtain_train_data(
+            data_set_path)
         self.model = self.train_model(self.df_train_data, self.df_train_labels, self.df_test_data, self.df_test_labels)
 
     @staticmethod
@@ -32,10 +34,14 @@ class ArtificialModel:
 
         df_train, df_test = DataCollector.split_data_frame_to_train_and_test(data, shuffle_rows=should_shuffle_rows)
 
-        df_train_data, df_train_labels = DataCollector.extract_labels_from_data_frame(df_train,
-                                                                                      column_name=label_column_name)
-        df_test_data, df_test_labels = DataCollector.extract_labels_from_data_frame(df_test,
-                                                                                    column_name=label_column_name)
+        df_train_data, df_train_labels = DataCollector.extract_labels_from_data_frame(
+            df_train,
+            column_name=label_column_name
+        )
+        df_test_data, df_test_labels = DataCollector.extract_labels_from_data_frame(
+            df_test,
+            column_name=label_column_name
+        )
 
         df_train_labels = DataCollector.update_labels_to_int_values(df_train_labels)
         df_train_labels = df_train_labels.to_numpy()
@@ -43,7 +49,7 @@ class ArtificialModel:
         df_test_labels = DataCollector.update_labels_to_int_values(df_test_labels)
         df_test_labels = df_test_labels.to_numpy()
 
-        return df_train_data, df_train_labels, df_test_data, df_test_labels
+        return (df_train_data, df_train_labels, df_test_data, df_test_labels)
 
     @staticmethod
     def train_model(dataset_train, dataset_train_labels, dataset_test, dataset_test_labels):
@@ -71,9 +77,11 @@ class ArtificialModel:
         model.add(tf.keras.layers.Dense(6, activation="relu"))
         model.add(tf.keras.layers.Dense(4, activation="softmax", name="output_layer"))
 
-        model.compile(optimizer=tf.keras.optimizers.Adam(),
-                      loss="sparse_categorical_crossentropy",
-                      metrics=['accuracy'])
+        model.compile(
+            optimizer=tf.keras.optimizers.Adam(),
+            loss="sparse_categorical_crossentropy",
+            metrics=['accuracy']
+        )
 
         model.fit(dataset_train, dataset_train_labels, epochs=15, shuffle=False)
 
@@ -101,7 +109,7 @@ class LinearQNet(nn.Module):
         :param x: Size for the linear later.
         :return: layer
         """
-        x = F.relu(self.linear_1(x))
+        x = func.relu(self.linear_1(x))
         x = self.linear_2(x)
         return x
 

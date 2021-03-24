@@ -28,22 +28,22 @@ class Player:
         if direction == 0:  # UP
             self.head_position_y = self.head_position_y - self.velocity
 
-        if direction == 1:  # DOWN
+        elif direction == 1:  # DOWN
             self.head_position_y = self.head_position_y + self.velocity
 
-        if direction == 2:  # LEFT
+        elif direction == 2:  # LEFT
             self.head_position_x = self.head_position_x - self.velocity
 
-        if direction == 3:  # RIGHT
+        elif direction == 3:  # RIGHT
             self.head_position_x = self.head_position_x + self.velocity
 
     def apply_body_movement(self):
         """
         Updates each snake body part by moving nodes (counting from last) to be in a position of a node-1, until it
-        reaches the head,
+        reaches the head.
         """
-        for iterator in reversed(range(0, len(self.nodes))):
-            self.nodes[iterator] = self.nodes[iterator - 1]
+        for i in reversed(range(0, len(self.nodes))):
+            self.nodes[i] = self.nodes[i - 1]
 
         self.nodes[0] = (self.head_position_x, self.head_position_y)
 
