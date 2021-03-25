@@ -1,6 +1,8 @@
 import random
 import torch
+
 from collections import deque
+
 from artificial_model import LinearQNet, QTrainer
 from game import Game
 from plotter import plot

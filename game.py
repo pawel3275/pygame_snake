@@ -1,10 +1,10 @@
 import pygame
-
-from player import Player
-import numpy as np
 import random
 
-from .data_collector import DataCollector
+import numpy as np
+
+from player import Player
+from data_collector import DataCollector
 
 
 class Game:
@@ -317,8 +317,8 @@ class Game:
         self.number_of_moves += 1
         self.head_direction = direction
 
-        screen = self.get_screen()
-        player = self.get_player()
+        screen = self.screen
+        player = self.player
 
         screen.fill((0, 0, 0))
 

@@ -1,6 +1,8 @@
 import csv
+
 import pandas as pd
 import numpy as np
+
 from sklearn.utils import shuffle
 from sklearn import preprocessing
 
@@ -41,7 +43,7 @@ class DataCollector:
     ]
 
     @staticmethod
-    def save_header_to_csv_file(csv_columns, filename="gameDataset.csv"):
+    def save_header_to_csv_file(csv_columns, filename="data_set.csv"):
         """
         Saves header of csv_columns to csv file specified in input param.
         :param csv_columns: csv columns in lsit format to be inserted to the csv file.
@@ -52,7 +54,7 @@ class DataCollector:
             writer.writeheader()
 
     @staticmethod
-    def save_data_row_to_csv_file(data_row, csv_columns, filename="gameDataset.csv"):
+    def save_data_row_to_csv_file(data_row, csv_columns, filename="data_set.csv"):
         """
         Puts data row specified in input to a file.
         :param data_row: List of values to be written to a csv file.

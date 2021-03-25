@@ -1,7 +1,8 @@
+import os.path
+
+import agent
 from game import Game
 from artificial_model import ArtificialModel
-import agent
-import os.path
 
 
 def run_basic_artificial_mode(data_set_path):

@@ -7,7 +7,7 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as func
 
-from .data_collector import DataCollector
+from data_collector import DataCollector
 
 
 class ArtificialModel:
@@ -43,10 +43,8 @@ class ArtificialModel:
             column_name=label_column_name
         )
 
-        df_train_labels = DataCollector.update_labels_to_int_values(df_train_labels)
         df_train_labels = df_train_labels.to_numpy()
 
-        df_test_labels = DataCollector.update_labels_to_int_values(df_test_labels)
         df_test_labels = df_test_labels.to_numpy()
 
         return (df_train_data, df_train_labels, df_test_data, df_test_labels)
