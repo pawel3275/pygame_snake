@@ -8,3 +8,13 @@ Since it is just a demo to practice reinforcement learning, few small adjustment
 * Cleaning up the data buffer from junk for the best achieved score.
 * Limitation of movement to only three possibilities.
 * Better adjustment of the reward and punishment rate.
+
+To run simply install the requirements via command:
+```
+pip install -r requirements.txt
+```
+
+Then run the game using python3:
+```
+python3 main.py
+```
